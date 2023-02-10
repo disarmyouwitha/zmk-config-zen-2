@@ -42,16 +42,16 @@
    &ht ESC TAB &ht LBKT  Q &ht RBKT  W &ht LBRC  E &ht RBRC  R &ht SQT  T                &ht MINUS Y &ht AMPS U  &ht STAR I     &ht LG(F) O   &ht LG(R) P    &kp BSPC
    &caps_word  &ht LG(A) A &ht LG(S) S &ht LPAR  D &ht RPAR  F &ht DQT  G                &ht UNDER H &ht EXCL J  &ht HASH K     &ht TILDE L   &ht RET   SEMI &kp RET
    &kp LSHIFT  &ht LG(Z) Z &ht LG(X) X &ht LG(C) C &ht LG(V) V &ht LCTRL B                &ht EQUAL N &ht AT   M  &ht DLLR COMMA &ht CARET DOT &ht BSLH  FSLH &kp BSLH
-        &kp LCMD &mo 1 &kp BSPC                                                                         &kp SPACE &mo 2 &sk LSHIFT
+        &kp LCMD &mo 1 &kp BSPC                                                                         &kp SPACE &sk LSHIFT &mo 2
                         >;
                 };
 
                 lower_layer {
                         label = "NUMBER";
                         bindings = <
-   &bt BT_CLR   &kp C_BRI_DN &kp C_BRI_UP &kp UP    &none         &none                         &kp PLUS  &kp N7 &kp N8 &kp N9 &none   &kp BSPC
-   &bt BT_SEL 0 &none        &kp LEFT     &kp DOWN  &kp RIGHT     &none                         &kp MINUS &kp N4 &kp N5 &kp N6 &none   &reset
-   &bt BT_SEL 1 &kp C_VOL_DN &kp C_VOL_UP &none     &kp SPACE     &kp LC(LG(Q))                 &kp EQUAL &kp N1 &kp N2 &kp N3 &kp DOT &bootloader
+   &bt BT_CLR   &none &none    &kp UP   &none     &none                         &kp PLUS  &kp N7 &kp N8 &kp N9 &none   &kp BSPC
+   &bt BT_SEL 0 &none &kp LEFT &kp DOWN &kp RIGHT &none                         &kp MINUS &kp N4 &kp N5 &kp N6 &none   &none
+   &bt BT_SEL 1 &none &none    &none    &kp SPACE &none                         &kp EQUAL &kp N1 &kp N2 &kp N3 &kp DOT &none
         &to 3 &none &kp BSPC                                                                         &kp SPACE &kp N0 &kp N0
                         >;
                 };
@@ -59,9 +59,9 @@
                 raise_layer {
                         label = "SYMBOL";
                         bindings = <
-   &kp ESC     &kp LBKT  &kp RBKT  &kp LBRC &kp RBRC &kp SQT                   &kp PLUS  &kp AMPS &kp STAR &kp C_BRI_DN &kp C_BRI_UP &kp DEL
-   &reset      &kp CARET &kp PRCNT &kp LPAR &kp RPAR &kp DQT                   &kp MINUS &kp EXCL &kp HASH &kp TILDE    &none        &kp PSCRN
-   &bootloader &kp BSLH  &kp PIPE  &kp LT   &kp GT   &kp GRAVE                 &kp EQUAL &kp AT   &kp DLLR &kp C_VOL_DN &kp C_VOL_UP &kp LC(LA(DEL))
+   &kp ESC &kp LBKT  &kp RBKT  &kp LBRC &kp RBRC &kp SQT                   &kp PLUS  &kp AMPS &kp STAR &none     &none &kp DEL
+   &none   &kp CARET &kp PRCNT &kp LPAR &kp RPAR &kp DQT                   &kp MINUS &kp EXCL &kp HASH &kp TILDE &none &kp PSCRN
+   &none   &kp BSLH  &kp PIPE  &kp LT   &kp GT   &kp GRAVE                 &kp EQUAL &kp AT   &kp DLLR &none     &none &kp LC(LA(DEL))
         &kp LGUI &none &kp BSPC                                                               &kp SPACE &none &none
                         >;
                 };
