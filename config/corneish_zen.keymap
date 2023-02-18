@@ -40,8 +40,8 @@
                         label = "QWERTY";
                         bindings = <
    &ht ESC TAB &ht LBKT  Q &ht RBKT  W &ht LBRC  E &ht RBRC  R &ht SQT  T                &ht MINUS Y &ht AMPS U  &ht STAR I     &ht LG(F) O   &ht LG(R) P    &kp BSPC
-   &caps_word  &ht LG(A) A &ht LG(S) S &ht LPAR  D &ht RPAR  F &ht DQT  G                &ht UNDER H &ht EXCL J  &ht HASH K     &ht TILDE L   &ht RET   SEMI &kp RET
-   &kp LSHIFT  &ht LG(Z) Z &ht LG(X) X &ht LG(C) C &ht LG(V) V &ht LCTRL B                &ht EQUAL N &ht AT   M  &ht DLLR COMMA &ht CARET DOT &ht BSLH  FSLH &kp BSLH
+   &caps_word  &ht LG(A) A &ht LG(S) S &ht LPAR  D &ht RPAR  F &ht DQT  G                &ht UNDER H &ht EXCL J  &ht HASH K     &ht TILDE L   &kp SEMI       &kp RET
+   &kp LSHIFT  &ht LG(Z) Z &ht LG(X) X &ht LG(C) C &ht LG(V) V &ht LCTRL B               &ht EQUAL N &ht AT   M  &ht DLLR COMMA &ht CARET DOT &ht BSLH  FSLH &kp BSLH
         &kp LCMD &mo 1 &kp BSPC                                                                         &kp SPACE &sk LSHIFT &mo 2
                         >;
                 };
