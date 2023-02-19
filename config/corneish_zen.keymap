@@ -37,7 +37,7 @@
                 compatible = "zmk,keymap";
 
                 default_layer {
-                        label = "QWERTY";
+                        label = "yahweh";
                         bindings = <
    &ht ESC TAB &ht LBKT  Q &ht RBKT  W &ht LBRC  E &ht RBRC  R &ht SQT  T                &ht MINUS Y &ht AMPS U  &ht STAR I     &ht LG(F) O   &ht LG(R) P    &kp BSPC
    &caps_word  &ht LG(A) A &ht LG(S) S &ht LPAR  D &ht RPAR  F &ht DQT  G                &ht UNDER H &ht EXCL J  &ht HASH K     &ht TILDE L   &kp SEMI       &kp RET
