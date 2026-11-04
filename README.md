@@ -49,8 +49,8 @@ at [`d895457`](https://github.com/petercpark/zmk-hid-io-plover-hid/commit/d89545
 
 Open the **Build Zen firmware** Actions run for the update branch and download
 its `firmware` artifact after both halves pass. Flash
-`corneish_zen_v2_left-zmk.uf2` to the left half and
-`corneish_zen_v2_right-zmk.uf2` to the right half: connect that half by USB,
+`corneish_zen_v2_left.uf2` to the left half and
+`corneish_zen_v2_right.uf2` to the right half: connect that half by USB,
 double-tap its reset button to mount the bootloader drive, then copy its matching
 UF2 file onto the drive. Repeat for the other half. Keep the previous working
 firmware as a rollback copy.
