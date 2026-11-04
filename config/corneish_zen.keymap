@@ -4,90 +4,69 @@
 #include <behaviors/plover_hid.dtsi>
 #include <dt-bindings/zmk/hid-io/plover_hid.h>
 
+#define MAIN 0
+#define SYM_NUM 1
+#define STENO 2
+
 / {
-  chosen {
-    zmk,physical-layout = &foostan_corne_6col_layout;
-    //zmk,physical-layout = &foostan_corne_5col_layout;
-  };
+    chosen {
+        zmk,physical-layout = &foostan_corne_6col_layout;
+    };
 };
 
 &sk {
-        release-after-ms = <2000>;
-        quick-release;
-};
-
-&caps_word {
-        continue-list = <UNDERSCORE MINUS BACKSPACE>;
+    release-after-ms = <2000>;
+    quick-release;
 };
 
 / {
-        behaviors {
-            ht: hold_tap {
-                compatible = "zmk,behavior-hold-tap";
-                label = "HOLD_TAP";
-                #binding-cells = <2>;
-                flavor = "tap-preferred";
-                tapping-term-ms = <200>;
-                quick-tap-ms = <125>;
-                require-prior-idle-ms = <125>;
-                bindings = <&kp>, <&kp>;
-            };
+    behaviors {
+        ht: hold_tap {
+            compatible = "zmk,behavior-hold-tap";
+            #binding-cells = <2>;
+            flavor = "tap-preferred";
+            tapping-term-ms = <200>;
+            quick-tap-ms = <125>;
+            require-prior-idle-ms = <125>;
+            bindings = <&kp>, <&kp>;
+        };
+    };
+
+    keymap {
+        compatible = "zmk,keymap";
+
+        main_layer {
+            display-name = "MAIN";
+            // ht parameters: hold first, tap second. Editing shortcuts use Command.
+            bindings = <
+&ht ESC TAB  &ht LBKT Q   &ht RBKT W   &ht LBRC E   &ht RBRC R   &ht SQT T       &ht MINUS Y &ht AMPS U &ht STAR I     &ht LG(F) O   &ht LG(LS(N4)) P &kp DEL
+&kp LCTRL    &ht LG(A) A  &ht LG(S) S  &ht LPAR D   &ht RPAR F   &ht DQT G       &ht UNDER H &ht EXCL J &ht HASH K     &ht TILDE L   &ht RET SEMI     &kp RET
+&kp LSHIFT   &ht LG(Z) Z  &ht LG(X) X  &ht LG(C) C  &ht LG(V) V  &ht GRAVE B     &ht EQUAL N &ht AT M   &ht DLLR COMMA &ht CARET DOT &ht BSLH FSLH    &to STENO
+                                      &kp LCMD &mo SYM_NUM &kp BSPC          &kp SPACE &kp SPACE &sk LSHIFT
+            >;
         };
 
-        keymap {
-                compatible = "zmk,keymap";
-
-                default_layer {
-                        label = "yahweh";
-                        bindings = <
-   &ht ESC TAB &ht LBKT  Q &ht RBKT  W &ht LBRC  E &ht RBRC  R &ht SQT  T                &ht MINUS Y &ht AMPS U  &ht STAR I     &ht LG(F) O   &ht LG(R) P    &kp BSPC
-   &caps_word  &ht LG(A) A &ht LG(S) S &ht LPAR  D &ht RPAR  F &ht DQT  G                &ht UNDER H &ht EXCL J  &ht HASH K     &ht TILDE L   &kp SEMI       &kp RET
-   &kp LSHIFT  &ht LG(Z) Z &ht LG(X) X &ht LG(C) C &ht LG(V) V &ht LCTRL B               &ht EQUAL N &ht AT   M  &ht DLLR COMMA &ht CARET DOT &ht BSLH  FSLH &kp BSLH
-        &kp LCMD &mo 1 &kp BSPC                                                                         &kp SPACE &sk LSHIFT &mo 2
-                        >;
-                };
-
-                lower_layer {
-                        label = "NUMBER";
-                        bindings = <
-   &bt BT_CLR   &to 4 &none    &kp UP   &none     &none                         &kp PLUS  &kp N7 &kp N8 &kp N9 &none   &kp BSPC
-   &bt BT_SEL 0 &none &kp LEFT &kp DOWN &kp RIGHT &none                         &kp MINUS &kp N4 &kp N5 &kp N6 &none   &none
-   &bt BT_SEL 1 &none &none    &none    &kp SPACE &none                         &kp EQUAL &kp N1 &kp N2 &kp N3 &kp DOT &none
-        &to 3 &none &kp BSPC                                                                         &kp SPACE &kp N0 &kp N0
-                        >;
-                };
-
-                raise_layer {
-                        label = "SYMBOL";
-                        bindings = <
-   &kp ESC &kp LBKT  &kp RBKT  &kp LBRC &kp RBRC &kp SQT                   &kp PLUS  &kp AMPS &kp STAR &none     &none &kp DEL
-   &none   &kp CARET &kp PRCNT &kp LPAR &kp RPAR &kp DQT                   &kp MINUS &kp EXCL &kp HASH &kp TILDE &none &kp PSCRN
-   &none   &kp BSLH  &kp PIPE  &kp LT   &kp GT   &kp GRAVE                 &kp EQUAL &kp AT   &kp DLLR &none     &none &kp LC(LA(DEL))
-        &kp LGUI &none &kp BSPC                                                               &kp SPACE &none &none
-                        >;
-                };
-
-                gaming_layer {
-                        label = "GAMING";
-                        bindings = <
-   &ht ESC TAB &kp Q &kp W &kp E &kp R &kp T                &kp Y &kp U  &kp I     &kp O   &kp P    &kp BSPC
-   &caps_word  &kp A &kp S &kp D &kp F &kp G                &kp H &kp J  &kp K     &kp L   &kp SEMI &kp RET
-   &kp LSHIFT  &kp Z &kp X &kp C &kp V &kp B                &kp N &kp M  &kp COMMA &kp DOT &kp FSLH &kp BSLH
-        &to 0 &none &kp BSPC                                        &kp SPACE &none &sk LSHIFT
-                        >;
-                };
-
-                // Dedicated Plover HID keys; distinct indices for repeated S/*/#.
-                // Vowels are on thumbs. Top-left exits to the ordinary keymap.
-                steno_layer {
-                        label = "STENO";
-                        bindings = <
-   &to 0        &plv PLV_NM  &plv PLV_NM2 &plv PLV_NM3 &plv PLV_NM4 &plv PLV_NM5     &plv PLV_NM6 &plv PLV_NM7 &plv PLV_NM8 &plv PLV_NM9 &plv PLV_NMA &plv PLV_NMB
-   &plv PLV_SL  &plv PLV_TL  &plv PLV_PL  &plv PLV_HL  &plv PLV_ST  &plv PLV_ST3     &plv PLV_FR  &plv PLV_PR  &plv PLV_LR  &plv PLV_TR  &plv PLV_DR  &none
-   &plv PLV_SL2 &plv PLV_KL  &plv PLV_WL  &plv PLV_RL  &plv PLV_ST2 &plv PLV_ST4     &plv PLV_RR  &plv PLV_BR  &plv PLV_GR  &plv PLV_SR  &plv PLV_ZR  &none
-                        &none &plv PLV_A &plv PLV_O                                  &plv PLV_E &plv PLV_U &none
-                        >;
-                };
-
+        sym_num_layer {
+            display-name = "SYM+NUM";
+            // Voyager LED positions Q/W/R retain Zen Bluetooth controls.
+            // Profile indices 0/1 correspond to the first/second host slots.
+            bindings = <
+&kp LG(LA(ESC)) &bt BT_SEL 0 &bt BT_SEL 1 &kp UP    &bt BT_CLR &none           &kp KP_PLUS &kp N7 &kp N8 &kp N9 &kp BSPC &kp BSPC
+&none          &none        &kp LEFT    &kp DOWN  &kp RIGHT  &none           &kp MINUS   &kp N4 &kp N5 &kp N6 &kp RET  &kp RET
+&kp LS(LEFT)   &none        &none       &kp SPACE &none      &none           &kp EQUAL   &kp N1 &kp N2 &kp N3 &kp DOT  &none
+                                      &trans &trans &trans                 &none &kp N0 &trans
+            >;
         };
+
+        steno_layer {
+            display-name = "STENO";
+            // Voyager geometry; distinct Plover HID indices for every steno key.
+            bindings = <
+&plv PLV_NMC &plv PLV_NM  &plv PLV_NM2 &plv PLV_NM3 &plv PLV_NM4 &plv PLV_NM5    &plv PLV_NM6 &plv PLV_NM7 &plv PLV_NM8 &plv PLV_NM9 &plv PLV_NMA &plv PLV_NMB
+&none        &plv PLV_SL  &plv PLV_TL  &plv PLV_PL  &plv PLV_HL  &plv PLV_ST     &plv PLV_ST3 &plv PLV_FR  &plv PLV_PR  &plv PLV_LR  &plv PLV_TR  &plv PLV_DR
+&to MAIN     &plv PLV_SL2 &plv PLV_KL  &plv PLV_WL  &plv PLV_RL  &plv PLV_ST2    &plv PLV_ST4 &plv PLV_RR  &plv PLV_BR  &plv PLV_GR  &plv PLV_SR  &plv PLV_ZR
+                                      &none &plv PLV_A &plv PLV_O               &plv PLV_E &plv PLV_U &none
+            >;
+        };
+    };
 };

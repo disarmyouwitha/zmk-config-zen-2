@@ -9,41 +9,48 @@ the latest upstream commit fetched during this migration. Both the west manifest
 and reusable build workflow are pinned to it so the builds are reproducible.
 The matrix explicitly selects **V2 / revision 2.0.0**, matching the old targets.
 
-Your yahweh, NUMBER, SYMBOL and GAMING layers retain their original bindings.
-Hold-tap keeps the 200 ms tapping term and 125 ms quick-tap behavior, with
-`global-quick-tap` migrated to `require-prior-idle-ms = <125>`.
-The six-column layout now uses the upstream physical-layout property.
-Sleep remains 15 minutes. The obsolete fork-only display settings were removed;
-the display uses upstream Zen defaults (including momentary-layer updates).
+The keymap now follows the supplied Voyager layout: **MAIN (0)**,
+**SYM+NUM (1)**, and **STENO (2)**. The unused Voyager number row is omitted
+because the Zen has three main rows. Detailed diagrams and tap/hold actions
+are in [KEYMAP.md](KEYMAP.md).
 
-### Steno controls (Plover HID)
+Hold-tap keeps the 200 ms tapping term, 125 ms quick-tap and prior-idle settings.
+Sleep remains 15 minutes. The display uses upstream Zen defaults.
 
-- Hold the existing NUMBER thumb key (left middle thumb), then press the second
-  key from the left on the top row (normally Q) to enter STENO. Release both.
-- Press the top-left key in STENO to return to yahweh.
-- Use **Plover → Configure → Machine → Plover HID**, then connect to the Zen.
-  Current Plover includes this machine type. Leave Plover output enabled:
-  the other four layers send normal keyboard reports and bypass the steno input.
-- Connect the **left half by USB** for initial testing. The module also provides
-  HID over GATT for Bluetooth, but discovery and support depend on the host's
-  HID stack; wireless Plover operation must be tested on the actual host.
-  The right half still communicates wirelessly with the left half in USB mode.
-- This is dedicated Plover HID, with usage page `0xFF50`, usage `0x4C56`, report
-  ID `0x50`, and an eight-byte steno state bitmap. NKRO is not enabled.
-  Translation and dictionaries live in Plover, not on the keyboard.
+### Layer controls and Mac translation
 
-Physical STENO layout (labels are steno meanings):
+- Hold the **middle left thumb key** for SYM+NUM; release it to return.
+- Tap the **bottom-right main key** to enter STENO.
+- Tap the **bottom-left key in STENO** to return to MAIN.
+- A/S/Z/X/C/V/O hold actions send **Command+A/S/Z/X/C/V/F**.
+- Hold **P** for **Command+Shift+4** (screenshot selection).
+- Hold **semicolon** for ordinary **Enter**, as requested.
+- Hold B for grave/backtick; the top-right main key is forward Delete.
+- Physical Control and Shift, punctuation holds, arrows, and Shift+Left stay as shown.
+- The old separate SYMBOL and GAMING layers are removed.
+- Zen has one extra thumb key per half: left outer stays Command; right outer
+  stays sticky Shift. The two Voyager right thumb positions both send Space.
+- Voyager LED controls are omitted. On SYM+NUM, Q selects Bluetooth profile 1,
+  W selects profile 2, and R clears the selected profile. Other LED positions
+  are disabled. The top-left SYM+NUM key opens the Mac Force Quit dialog
+  (Command+Option+Escape), replacing the Windows Control+Alt+Delete action.
 
-```text
- EXIT  #  #  #  #  #       #  #  #  #  #  #
- S-   T- P- H-  *  *      -F -P -L -T -D  —
- S-   K- W- R-  *  *      -R -B -G -S -Z  —
-          —  A- O-        -E -U  —
-```
+### Plover HID
 
-Each physical S, star and number-bar key uses its own Plover HID index, so
-releasing one does not clear another key that is still held. The module is pinned
-at [`d895457`](https://github.com/petercpark/zmk-hid-io-plover-hid/commit/d895457418590dddf628c5ae907b39deec7095ff).
+Use **Plover → Configure → Machine → Plover HID**, then connect to the Zen.
+Leave Plover output enabled: MAIN and SYM+NUM send ordinary keyboard reports
+and bypass Plover's steno input. Connect the left half by USB for initial testing;
+the right half continues to communicate with it wirelessly.
+
+The pinned module is
+[`petercpark/zmk-hid-io-plover-hid@d895457`](https://github.com/petercpark/zmk-hid-io-plover-hid/commit/d895457418590dddf628c5ae907b39deec7095ff).
+It sends an eight-byte state bitmap with usage page `0xFF50`, usage `0x4C56`,
+and report ID `0x50`. NKRO is not enabled. Each physical S, star and number-bar
+key uses its own report index. Translation and dictionaries live in Plover.
+
+The previous build has been physically tested over USB by the user; macOS also
+enumerated its Plover HID interface over Bluetooth. The Voyager keymap revision
+still needs its own physical key-by-key and chord tests after flashing.
 
 ### Build and flash
 
@@ -57,8 +64,8 @@ firmware as a rollback copy.
 
 Both halves must be updated together because this crosses several ZMK versions.
 Adding the steno interface alters the HID descriptors: forget the old keyboard pairing on
-the host, clear that host profile on the Zen using the existing NUMBER + BT_CLR
-binding, and pair again. Try USB first to verify ordinary typing and Plover
+the host, clear that host profile on the Zen using SYM+NUM + R
+(BT_CLR), and pair again. Try USB first to verify ordinary typing and Plover
 chords. Flashing and physical/Bluetooth tests must be done on the actual keyboard.
 
 References: [Plover HID protocol](https://github.com/dnaq/plover-machine-hid),
