@@ -1,7 +1,70 @@
 # Corne-ish Zen V2 Custom Configuration
 ![Corne-ish Zen Logo](img/Zen_R3_sticker.png)
 
-**NOTE: This code is currently merged into ZMK Main.**
+## Upstream migration and Plover steno
+
+This configuration uses upstream ZMK main commit
+[`4dd95d7840eb3d5a3f59bb29fbf1ab054715ef85`](https://github.com/zmkfirmware/zmk/commit/4dd95d7840eb3d5a3f59bb29fbf1ab054715ef85),
+the latest upstream commit fetched during this migration. Both the west manifest
+and reusable build workflow are pinned to it so the builds are reproducible.
+The matrix explicitly selects **V2 / revision 2.0.0**, matching the old targets.
+
+Your yahweh, NUMBER, SYMBOL and GAMING layers retain their original bindings.
+Hold-tap keeps the 200 ms tapping term and 125 ms quick-tap behavior, with
+`global-quick-tap` migrated to `require-prior-idle-ms = <125>`.
+The six-column layout now uses the upstream physical-layout property.
+Sleep remains 15 minutes. The obsolete fork-only display settings were removed;
+the display uses upstream Zen defaults (including momentary-layer updates).
+
+### Steno controls (Plover HID)
+
+- Hold the existing NUMBER thumb key (left middle thumb), then press the second
+  key from the left on the top row (normally Q) to enter STENO. Release both.
+- Press the top-left key in STENO to return to yahweh.
+- Use **Plover → Configure → Machine → Plover HID**, then connect to the Zen.
+  Current Plover includes this machine type. Leave Plover output enabled:
+  the other four layers send normal keyboard reports and bypass the steno input.
+- Connect the **left half by USB** for initial testing. The module also provides
+  HID over GATT for Bluetooth, but discovery and support depend on the host's
+  HID stack; wireless Plover operation must be tested on the actual host.
+  The right half still communicates wirelessly with the left half in USB mode.
+- This is dedicated Plover HID, with usage page `0xFF50`, usage `0x4C56`, report
+  ID `0x50`, and an eight-byte steno state bitmap. NKRO is not enabled.
+  Translation and dictionaries live in Plover, not on the keyboard.
+
+Physical STENO layout (labels are steno meanings):
+
+```text
+ EXIT  #  #  #  #  #       #  #  #  #  #  #
+ S-   T- P- H-  *  *      -F -P -L -T -D  —
+ S-   K- W- R-  *  *      -R -B -G -S -Z  —
+          —  A- O-        -E -U  —
+```
+
+Each physical S, star and number-bar key uses its own Plover HID index, so
+releasing one does not clear another key that is still held. The module is pinned
+at [`d895457`](https://github.com/petercpark/zmk-hid-io-plover-hid/commit/d895457418590dddf628c5ae907b39deec7095ff).
+
+### Build and flash
+
+Open the **Build Zen firmware** Actions run for the update branch and download
+its `firmware` artifact after both halves pass. Flash
+`corneish_zen_v2_left-zmk.uf2` to the left half and
+`corneish_zen_v2_right-zmk.uf2` to the right half: connect that half by USB,
+double-tap its reset button to mount the bootloader drive, then copy its matching
+UF2 file onto the drive. Repeat for the other half. Keep the previous working
+firmware as a rollback copy.
+
+Both halves must be updated together because this crosses several ZMK versions.
+Adding the steno interface alters the HID descriptors: forget the old keyboard pairing on
+the host, clear that host profile on the Zen using the existing NUMBER + BT_CLR
+binding, and pair again. Try USB first to verify ordinary typing and Plover
+chords. Flashing and physical/Bluetooth tests must be done on the actual keyboard.
+
+References: [Plover HID protocol](https://github.com/dnaq/plover-machine-hid),
+[Plover setup](https://plover.wiki/index.php/Beginner%27s_Guide), and
+[Zen support and bootloader instructions](https://lowprokb.ca/pages/corne-ish-zen-support).
+
 
 This repo is the official configuration of the Corne-ish Zen V2 low profile wireless mechanical keyboard. Use it to develop your own keymap and easily build your own ZMK firmware to run on your Corne-ish Zen. These steps will get you using your keymap on your keyboard in the fastest time possible. It uses the GitHub Actions feature to build your firmware online, rather than setting up a complex tool chain on your local computer.
 
